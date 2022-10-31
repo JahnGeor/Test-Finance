@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  avito-finance:
+    container_name: avito-finance
+    build: ./
+    ports:
+      - ${SRV_PORT}:${SRV_PORT}
+    depends_on:
+      - db
+  db:
+    container_name: ${DB_HOST}
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DOCKER_EXTERNAL_DB_PORT}:5432
